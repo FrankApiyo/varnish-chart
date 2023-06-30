@@ -12,15 +12,8 @@ spec:
   type: {{ .Values.service.type }}
   ports:
     - port: {{ .Values.service.port }}
-      {{- with .Values.service.nodePort }}
-      nodePort: {{ . }}
-      {{- end }}
-      targetPort: http
+      targetPort: {{ .Values.varnishListeningPort }}
       protocol: TCP
       name: http
-    - port: {{ .Values.prometheus.port }}
-      targetPort: http
-      protocol: TCP
-      name: exporter
   selector:
     {{- include "varnish.selectorLabels" . | nindent 4 }}

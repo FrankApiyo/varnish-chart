@@ -61,6 +61,21 @@ spec:
               - {{ . }}
             {{ end }}
           {{- end }}
+          command:
+            - /usr/sbin/varnishd
+            - -n
+            - /var/lib/varnish
+            - -F
+            - -f
+            - /etc/varnish/default.vcl
+            - -a
+            - http=:{{ .Values.varnishListeningPort }},HTTP
+            - -a
+            - proxy=:8443,PROXY
+            - -p
+            - feature=+http2
+            - -s
+            - malloc,100M
           ports:
             - name: http
               containerPort: {{ .Values.varnishListeningPort }}
